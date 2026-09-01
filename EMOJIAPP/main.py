@@ -26,20 +26,21 @@ def main(page: ft.Page):
     #A função aninhada à main para que ela consiga acessar as variáveis declaradas na função main (ex. variável input)
     #A função acresce o valor de IDX para mostrar o próximo emoji da lista
     # O parâmentro "e" da função carrega informações sobre o evento executado, é possível acessar a partir de "e" o elemento que sofreu o evento
-    def refresh_click(c):
+    def refresh_click(e):
         global IDX 
-        #Incrmento circular:
-        #   * Acresce IDX em 1
-        #   * Se IDX > tamanho da lista de emojis, então IDX volta a ser 0
-        #     OBS: IDX nunca passa do maior índice da lista
-        #      IDX = 0,1,2,3,4,0,1,2,3,4,0....
-        IDX = (IDX + 1) % len(EMOJIS)
+        btn = e.control
+        if btn.icon == ft.Icons.ARROW_RIGHT_SHARP:
+            IDX = (IDX + 1) 
+        elif btn.icon == ft.Icons.ARROW_LEFT_SHARP:
+            IDX = (IDX - 1) 
+        IDX = IDX % len(EMOJIS) #garante que o índice não ultrapasse o tamanho da lista
         input.value = EMOJIS[IDX]
 
-    btn = ft.ElevatedButton("Next Emoji", on_click=refresh_click)
+    btn_right = ft.IconButton(icon=ft.Icons.ARROW_RIGHT_SHARP, on_click=refresh_click)
+    btn_left = ft.IconButton(icon=ft.Icons.ARROW_LEFT_SHARP, on_click=refresh_click)
     row = ft.Row(
         alignment=ft.MainAxisAlignment.CENTER,
-        controls=[input, btn]
+        controls=[btn_left, input, btn_right]
     )
 
 
