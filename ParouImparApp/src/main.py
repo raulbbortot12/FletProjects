@@ -10,12 +10,11 @@ def main(page: ft.Page):
         value = input_text.value
         try:
             int_value = int(value)
-            output_txt.value = ft.Text(value = '')  
+            output_txt.value = ''
             if (int_value % 2 == 0):
                 output_txt.value += f'{int_value} é par.\n'
             else:
                 output_txt.value += f'{int_value} é ímpar.\n'
-                output_col.controls.append(output_txt)  
         except ValueError:
             if(value.strip() == ''):
                 dialog.content = ft.Text('O campo está vazio.')
@@ -61,5 +60,6 @@ def main(page: ft.Page):
     page.title = "ParOuÍmparApp"
     page.add(main_col)
 
-    if __name__ == "__main__":
-        ft.run(main)
+
+if __name__ == "__main__":
+    ft.run(main)
