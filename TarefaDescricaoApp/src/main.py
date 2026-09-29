@@ -11,7 +11,7 @@ def main(page: ft.Page):
         expand=True,
     )
 
-    lista_tarefas = ft.Column()
+    lista_tarefas = ft.Column(spacing=10)
 
 
     def adicionar_tarefa(e):
@@ -115,7 +115,8 @@ def main(page: ft.Page):
             controls=[
                 campo_tarefa,
                 botao_adicionar,
-            ]
+            ],
+            alignment=ft.MainAxisAlignment.START,
         ),
 
         ft.Divider(),
