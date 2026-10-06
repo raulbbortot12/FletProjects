@@ -14,9 +14,9 @@ BOOKAPP_SQL_PATH = os.path.join(
     "bookapp.sql"
 )
 
-INSERT_BOOK_QUERY = '''INSERT INTO books (title, author, desc, price) VALUES (?, ?, ?, ?)'''
+INSERT_BOOK_QUERY = '''INSERT INTO books (title, author, desc, price, cover) VALUES (?, ?, ?, ?, ?)'''
 
-FETCH_BOOKS_QUERY = '''SELECT title, author, desc, price FROM books;'''
+FETCH_BOOKS_QUERY = '''SELECT title, author, desc, price, cover FROM books;'''
 
 
 class Database(object):
@@ -37,11 +37,16 @@ class Database(object):
             with open(BOOKAPP_SQL_PATH, "r", encoding='utf-8') as sqlf:
                 sql_script = sqlf.read()
                 conn.executescript(sql_script)
+            # Ensure the `cover` column exists (migrate older DBs)
+            cur = conn.execute("PRAGMA table_info(books);")
+            cols = [row[1] for row in cur.fetchall()]
+            if 'cover' not in cols:
+                conn.execute("ALTER TABLE books ADD COLUMN cover TEXT;")
     def insert(self, book:Book):
         ''' insere um livro no banco de dados. '''
         with self.__connect() as conn:
             conn.execute(
-                INSERT_BOOK_QUERY, (book.title, book.author, book.desc, book.price)
+                INSERT_BOOK_QUERY, (book.title, book.author, book.desc, book.price, book.cover)
             )
     def fetch_all(self) -> list[Book]:
         ''' retorna uma lista de livros do banco de dados. '''
@@ -58,7 +63,8 @@ class Database(object):
                     title=str(row[0]),
                     author=str(row[1]),
                     desc=str(row[2]),
-                    price=float(row[3])
+                    price=float(row[3]),
+                    cover=str(row[4])
                )
                ret.append(book)
         return ret

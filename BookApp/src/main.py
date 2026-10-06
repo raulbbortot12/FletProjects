@@ -8,4 +8,4 @@ def main(page: ft.Page):
     book_app.load_books()
 
 if __name__ == "__main__":
-    ft.run(main)
+    ft.run(main, assets_dir="assets")

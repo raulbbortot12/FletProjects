@@ -3,5 +3,6 @@ CREATE TABLE  IF NOT EXISTS books (
     title TEXT NOT NULL,
     author TEXT NOT NULL,
     desc TEXT NOT NULL,
-    price REAL NOT NULL
+    price REAL NOT NULL,
+    cover TEXT
 );                                                                                                                                                                                                  
